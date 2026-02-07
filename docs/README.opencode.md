@@ -7,7 +7,7 @@ Complete guide for using Superpowers with [OpenCode.ai](https://opencode.ai).
 Tell OpenCode:
 
 ```
-Clone https://github.com/obra/superpowers to ~/.config/opencode/superpowers, then create directory ~/.config/opencode/plugins, then symlink ~/.config/opencode/superpowers/.opencode/plugins/superpowers.js to ~/.config/opencode/plugins/superpowers.js, then symlink ~/.config/opencode/superpowers/skills to ~/.config/opencode/skills/superpowers, then restart opencode.
+Clone https://github.com/obra/superpowers to ~/.config/opencode/superpowers, then create ~/.config/opencode/plugins and ~/.config/opencode/skills/superpowers, then symlink ~/.config/opencode/superpowers/.opencode/plugins/superpowers.js to ~/.config/opencode/plugins/superpowers.js, then symlink only these skills into ~/.config/opencode/skills/superpowers: brainstorming, systematic-debugging, verification-before-completion, test-driven-development, using-git-worktrees, finishing-a-development-branch, writing-skills, using-omo-superpowers, then restart opencode.
 ```
 
 ## Manual Installation
@@ -36,7 +36,20 @@ rm -rf ~/.config/opencode/skills/superpowers
 
 # 4. Create symlinks
 ln -s ~/.config/opencode/superpowers/.opencode/plugins/superpowers.js ~/.config/opencode/plugins/superpowers.js
-ln -s ~/.config/opencode/superpowers/skills ~/.config/opencode/skills/superpowers
+mkdir -p ~/.config/opencode/skills/superpowers
+
+for skill in \
+  brainstorming \
+  systematic-debugging \
+  verification-before-completion \
+  test-driven-development \
+  using-git-worktrees \
+  finishing-a-development-branch \
+  writing-skills \
+  using-omo-superpowers
+do
+  ln -s "$HOME/.config/opencode/superpowers/skills/${skill}" "$HOME/.config/opencode/skills/superpowers/${skill}"
+done
 
 # 5. Restart OpenCode
 ```
@@ -48,7 +61,7 @@ ls -l ~/.config/opencode/plugins/superpowers.js
 ls -l ~/.config/opencode/skills/superpowers
 ```
 
-Both should show symlinks pointing to the superpowers directory.
+Plugin should be a symlink, and `skills/superpowers/` should contain the selected skill links.
 
 ### Windows
 
@@ -79,8 +92,11 @@ rmdir "%USERPROFILE%\.config\opencode\skills\superpowers" 2>nul
 :: 4. Create plugin symlink (requires Developer Mode or Admin)
 mklink "%USERPROFILE%\.config\opencode\plugins\superpowers.js" "%USERPROFILE%\.config\opencode\superpowers\.opencode\plugins\superpowers.js"
 
-:: 5. Create skills junction (works without special privileges)
-mklink /J "%USERPROFILE%\.config\opencode\skills\superpowers" "%USERPROFILE%\.config\opencode\superpowers\skills"
+:: 5. Create selective skill junctions (works without special privileges)
+mkdir "%USERPROFILE%\.config\opencode\skills\superpowers" 2>nul
+for %%S in (brainstorming systematic-debugging verification-before-completion test-driven-development using-git-worktrees finishing-a-development-branch writing-skills using-omo-superpowers) do (
+  mklink /J "%USERPROFILE%\.config\opencode\skills\superpowers\%%S" "%USERPROFILE%\.config\opencode\superpowers\skills\%%S"
+)
 
 :: 6. Restart OpenCode
 ```
@@ -104,8 +120,12 @@ Remove-Item "$env:USERPROFILE\.config\opencode\skills\superpowers" -Force -Error
 # 4. Create plugin symlink (requires Developer Mode or Admin)
 New-Item -ItemType SymbolicLink -Path "$env:USERPROFILE\.config\opencode\plugins\superpowers.js" -Target "$env:USERPROFILE\.config\opencode\superpowers\.opencode\plugins\superpowers.js"
 
-# 5. Create skills junction (works without special privileges)
-New-Item -ItemType Junction -Path "$env:USERPROFILE\.config\opencode\skills\superpowers" -Target "$env:USERPROFILE\.config\opencode\superpowers\skills"
+# 5. Create selective skill junctions (works without special privileges)
+New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\.config\opencode\skills\superpowers"
+$skills = @("brainstorming","systematic-debugging","verification-before-completion","test-driven-development","using-git-worktrees","finishing-a-development-branch","writing-skills","using-omo-superpowers")
+foreach ($skill in $skills) {
+  New-Item -ItemType Junction -Path "$env:USERPROFILE\.config\opencode\skills\superpowers\$skill" -Target "$env:USERPROFILE\.config\opencode\superpowers\skills\$skill"
+}
 
 # 6. Restart OpenCode
 ```
@@ -128,8 +148,11 @@ rm -rf ~/.config/opencode/skills/superpowers 2>/dev/null
 # 4. Create plugin symlink (requires Developer Mode or Admin)
 cmd //c "mklink \"$(cygpath -w ~/.config/opencode/plugins/superpowers.js)\" \"$(cygpath -w ~/.config/opencode/superpowers/.opencode/plugins/superpowers.js)\""
 
-# 5. Create skills junction (works without special privileges)
-cmd //c "mklink /J \"$(cygpath -w ~/.config/opencode/skills/superpowers)\" \"$(cygpath -w ~/.config/opencode/superpowers/skills)\""
+# 5. Create selective skill junctions (works without special privileges)
+cmd //c "mkdir \"$(cygpath -w ~/.config/opencode/skills/superpowers)\" 2>nul"
+for skill in brainstorming systematic-debugging verification-before-completion test-driven-development using-git-worktrees finishing-a-development-branch writing-skills using-omo-superpowers; do
+  cmd //c "mklink /J \"$(cygpath -w ~/.config/opencode/skills/superpowers/$skill)\" \"$(cygpath -w ~/.config/opencode/superpowers/skills/$skill)\""
+done
 
 # 6. Restart OpenCode
 ```
@@ -239,7 +262,7 @@ OpenCode discovers skills from these locations:
 
 ### Automatic Context Injection
 
-The plugin automatically injects superpowers context via the `experimental.chat.system.transform` hook. This adds the "using-superpowers" skill content to the system prompt on every request.
+The plugin automatically injects superpowers context via the `experimental.chat.system.transform` hook. This adds the "using-omo-superpowers" skill content to the system prompt on every request.
 
 ### Native Skills Integration
 
@@ -262,11 +285,11 @@ Skills written for Claude Code are automatically adapted for OpenCode. The boots
 
 **Components:**
 - `experimental.chat.system.transform` hook for bootstrap injection
-- Reads and injects the "using-superpowers" skill content
+- Reads and injects the "using-omo-superpowers" skill content
 
 ### Skills
 
-**Location:** `~/.config/opencode/skills/superpowers/` (symlink to `~/.config/opencode/superpowers/skills/`)
+**Location:** `~/.config/opencode/skills/superpowers/` (selective symlinks/junctions to chosen directories under `~/.config/opencode/superpowers/skills/`)
 
 Skills are discovered by OpenCode's native skill system. Each skill has a `SKILL.md` file with YAML frontmatter.
 
@@ -290,7 +313,7 @@ Restart OpenCode to load the updates.
 
 ### Skills not found
 
-1. Verify skills symlink: `ls -l ~/.config/opencode/skills/superpowers` (should point to superpowers/skills/)
+1. Verify selective skill links: `ls -l ~/.config/opencode/skills/superpowers`
 2. Use OpenCode's `skill` tool to list available skills
 3. Check skill structure: each skill needs a `SKILL.md` file with valid frontmatter
 
@@ -302,7 +325,7 @@ If you see `Cannot find module` errors on Windows:
 
 ### Bootstrap not appearing
 
-1. Verify using-superpowers skill exists: `ls ~/.config/opencode/superpowers/skills/using-superpowers/SKILL.md`
+1. Verify using-omo-superpowers skill exists: `ls ~/.config/opencode/superpowers/skills/using-omo-superpowers/SKILL.md`
 2. Check OpenCode version supports `experimental.chat.system.transform` hook
 3. Restart OpenCode after plugin changes
 

@@ -25,12 +25,25 @@ ln -s ~/.config/opencode/superpowers/.opencode/plugins/superpowers.js ~/.config/
 
 ### 3. Symlink Skills
 
-Create a symlink so OpenCode's native skill tool discovers superpowers skills:
+Create selective symlinks so OpenCode's native skill tool discovers only your OMO profile subset:
 
 ```bash
 mkdir -p ~/.config/opencode/skills
-rm -rf ~/.config/opencode/skills/superpowers
-ln -s ~/.config/opencode/superpowers/skills ~/.config/opencode/skills/superpowers
+mkdir -p ~/.config/opencode/skills/superpowers
+
+for skill in \
+  brainstorming \
+  systematic-debugging \
+  verification-before-completion \
+  test-driven-development \
+  using-git-worktrees \
+  finishing-a-development-branch \
+  writing-skills \
+  using-omo-superpowers
+do
+  rm -rf "$HOME/.config/opencode/skills/superpowers/${skill}"
+  ln -sfn "$HOME/.config/opencode/superpowers/skills/${skill}" "$HOME/.config/opencode/skills/superpowers/${skill}"
+done
 ```
 
 ### 4. Restart OpenCode
@@ -101,9 +114,10 @@ git pull
 
 ### Skills not found
 
-1. Check skills symlink: `ls -l ~/.config/opencode/skills/superpowers`
-2. Verify it points to: `~/.config/opencode/superpowers/skills`
-3. Use `skill` tool to list what's discovered
+1. Check selective links: `ls -l ~/.config/opencode/skills/superpowers`
+2. Verify each linked skill points into: `~/.config/opencode/superpowers/skills/`
+3. Confirm bootstrap skill exists: `ls ~/.config/opencode/superpowers/skills/using-omo-superpowers/SKILL.md`
+4. Use `skill` tool to list what's discovered
 
 ### Tool mapping
 
