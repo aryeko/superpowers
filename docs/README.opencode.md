@@ -7,7 +7,7 @@ Complete guide for using Superpowers with [OpenCode.ai](https://opencode.ai).
 Tell OpenCode:
 
 ```
-Clone https://github.com/obra/superpowers to ~/.config/opencode/superpowers, then create ~/.config/opencode/plugins and ~/.config/opencode/skills/superpowers, then symlink ~/.config/opencode/superpowers/.opencode/plugins/superpowers.js to ~/.config/opencode/plugins/superpowers.js, then symlink only these skills into ~/.config/opencode/skills/superpowers: brainstorming, systematic-debugging, verification-before-completion, test-driven-development, using-git-worktrees, finishing-a-development-branch, writing-skills, using-omo-superpowers, then restart opencode.
+Clone https://github.com/aryeko/superpowers to ~/.config/opencode/superpowers, then create ~/.config/opencode/plugins and ~/.config/opencode/skills/superpowers, then symlink ~/.config/opencode/superpowers/.opencode/plugins/superpowers.js to ~/.config/opencode/plugins/superpowers.js, then symlink only these skills into ~/.config/opencode/skills/superpowers: brainstorming, systematic-debugging, verification-before-completion, test-driven-development, using-git-worktrees, finishing-a-development-branch, writing-skills, using-omo-superpowers, then restart opencode.
 ```
 
 ## Manual Installation
@@ -24,7 +24,7 @@ Clone https://github.com/obra/superpowers to ~/.config/opencode/superpowers, the
 if [ -d ~/.config/opencode/superpowers ]; then
   cd ~/.config/opencode/superpowers && git pull
 else
-  git clone https://github.com/obra/superpowers.git ~/.config/opencode/superpowers
+  git clone https://github.com/aryeko/superpowers.git ~/.config/opencode/superpowers
 fi
 
 # 2. Create directories
@@ -79,7 +79,7 @@ Run as Administrator, or with Developer Mode enabled:
 
 ```cmd
 :: 1. Install Superpowers
-git clone https://github.com/obra/superpowers.git "%USERPROFILE%\.config\opencode\superpowers"
+git clone https://github.com/aryeko/superpowers.git "%USERPROFILE%\.config\opencode\superpowers"
 
 :: 2. Create directories
 mkdir "%USERPROFILE%\.config\opencode\plugins" 2>nul
@@ -107,7 +107,7 @@ Run as Administrator, or with Developer Mode enabled:
 
 ```powershell
 # 1. Install Superpowers
-git clone https://github.com/obra/superpowers.git "$env:USERPROFILE\.config\opencode\superpowers"
+git clone https://github.com/aryeko/superpowers.git "$env:USERPROFILE\.config\opencode\superpowers"
 
 # 2. Create directories
 New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\.config\opencode\plugins"
@@ -136,7 +136,7 @@ Note: Git Bash's native `ln` command copies files instead of creating symlinks. 
 
 ```bash
 # 1. Install Superpowers
-git clone https://github.com/obra/superpowers.git ~/.config/opencode/superpowers
+git clone https://github.com/aryeko/superpowers.git ~/.config/opencode/superpowers
 
 # 2. Create directories
 mkdir -p ~/.config/opencode/plugins ~/.config/opencode/skills
