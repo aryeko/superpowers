@@ -50,6 +50,8 @@ done
 
 Restart OpenCode. The plugin will automatically inject superpowers context.
 
+Skill IDs are namespaced (`superpowers/...`) to avoid duplicate entries like both `/brainstorming` and `/superpowers/brainstorming`.
+
 Verify by asking: "do you have superpowers?"
 
 ## Usage

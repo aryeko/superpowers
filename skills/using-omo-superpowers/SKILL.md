@@ -1,5 +1,5 @@
 ---
-name: using-omo-superpowers
+name: superpowers/using-omo-superpowers
 description: Bootstrap profile for OpenCode + OMO that enables a selective Superpowers subset and blocks automatic use of plan/execution workflow skills.
 ---
 

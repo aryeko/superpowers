@@ -63,6 +63,8 @@ ls -l ~/.config/opencode/skills/superpowers
 
 Plugin should be a symlink, and `skills/superpowers/` should contain the selected skill links.
 
+Skill IDs are namespaced as `superpowers/<skill-name>` to prevent duplicate command entries.
+
 ### Windows
 
 **Prerequisites:**
@@ -316,6 +318,10 @@ Restart OpenCode to load the updates.
 1. Verify selective skill links: `ls -l ~/.config/opencode/skills/superpowers`
 2. Use OpenCode's `skill` tool to list available skills
 3. Check skill structure: each skill needs a `SKILL.md` file with valid frontmatter
+
+### Duplicate skills shown in picker
+
+If you see both `/brainstorming` and `/superpowers/brainstorming`, restart OpenCode after updating. Current Superpowers skills are namespaced in frontmatter to prevent duplicate aliases.
 
 ### Windows: Module not found error
 
