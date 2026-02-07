@@ -29,7 +29,7 @@ Create selective symlinks so OpenCode's native skill tool discovers only your OM
 
 ```bash
 mkdir -p ~/.config/opencode/skills
-mkdir -p ~/.config/opencode/skills/superpowers
+rm -rf ~/.config/opencode/skills/superpowers
 
 for skill in \
   brainstorming \
@@ -41,8 +41,8 @@ for skill in \
   writing-skills \
   using-omo-superpowers
 do
-  rm -rf "$HOME/.config/opencode/skills/superpowers/${skill}"
-  ln -sfn "$HOME/.config/opencode/superpowers/skills/${skill}" "$HOME/.config/opencode/skills/superpowers/${skill}"
+  rm -rf "$HOME/.config/opencode/skills/${skill}"
+  ln -sfn "$HOME/.config/opencode/superpowers/skills/${skill}" "$HOME/.config/opencode/skills/${skill}"
 done
 ```
 
@@ -50,7 +50,7 @@ done
 
 Restart OpenCode. The plugin will automatically inject superpowers context.
 
-Skill IDs are namespaced (`superpowers/...`) to avoid duplicate entries like both `/brainstorming` and `/superpowers/brainstorming`.
+Skill IDs are namespaced (`superpowers/...`), and flat symlinks avoid duplicate entries like `/superpowers/superpowers/brainstorming`.
 
 Verify by asking: "do you have superpowers?"
 
@@ -116,7 +116,7 @@ git pull
 
 ### Skills not found
 
-1. Check selective links: `ls -l ~/.config/opencode/skills/superpowers`
+1. Check selective links: `ls -l ~/.config/opencode/skills`
 2. Verify each linked skill points into: `~/.config/opencode/superpowers/skills/`
 3. Confirm bootstrap skill exists: `ls ~/.config/opencode/superpowers/skills/using-omo-superpowers/SKILL.md`
 4. Use `skill` tool to list what's discovered
